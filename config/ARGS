@@ -1,5 +1,5 @@
 BASE_IMAGE_NAME=tuxdude/homelab-base
-BASE_IMAGE_TAG=latest
+BASE_IMAGE_TAG=master
 USER_NAME=postfix
 GROUP_NAME=postfix
 USER_ID=16003
