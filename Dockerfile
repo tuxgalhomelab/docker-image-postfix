@@ -52,7 +52,7 @@ RUN \
         /etc/postfix/master.cf \
     # Set up the necessary directories along with granting \
     # permissions to the user we created. \
-    && chown -R postfix:postfix /etc/postfix/ /var/spool/ \
+    && chown -R postfix:postfix /etc/postfix/ /var/spool/ /etc/sasldb2 \
     # Copy the entrypoint script. \
     && cp /scripts/entrypoint.sh /usr/sbin/entrypoint.sh \
     # Clean up. \
