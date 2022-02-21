@@ -8,7 +8,7 @@ SHELL ["/bin/bash", "-c"]
 
 ARG POSTFIX_VERSION_DEBIAN_PKG
 
-COPY scripts/entrypoint.sh /scripts/
+COPY scripts/start-postfix.sh /scripts/
 COPY patches /patches
 RUN \
     set -e -o pipefail \
@@ -53,8 +53,8 @@ RUN \
     # Set up the necessary directories along with granting \
     # permissions to the user we created. \
     && chown -R postfix:postfix /etc/postfix/ /var/spool/ /etc/sasldb2 \
-    # Copy the entrypoint script. \
-    && cp /scripts/entrypoint.sh /usr/sbin/entrypoint.sh \
+    # Copy the start-postfix.sh script. \
+    && cp /scripts/start-postfix.sh /opt/bin/start-postfix.sh \
     # Clean up. \
     && homelab cleanup
 
@@ -63,5 +63,5 @@ ENV PATH="/opt/bin:${PATH}"
 
 USER ${USER_NAME}:${GROUP_NAME}
 WORKDIR /home/${USER_NAME}
-CMD ["entrypoint.sh", "postfix-oneshot"]
+CMD ["start-postfix.sh", "postfix-oneshot"]
 STOPSIGNAL SIGQUIT
