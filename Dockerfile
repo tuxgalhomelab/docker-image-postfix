@@ -63,6 +63,5 @@ ENV PATH="/opt/bin:${PATH}"
 
 USER ${USER_NAME}:${GROUP_NAME}
 WORKDIR /home/${USER_NAME}
-ENTRYPOINT ["entrypoint.sh"]
-CMD ["postfix-oneshot"]
+CMD ["entrypoint.sh", "postfix-oneshot"]
 STOPSIGNAL SIGQUIT
