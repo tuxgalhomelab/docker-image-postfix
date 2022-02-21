@@ -54,7 +54,9 @@ RUN \
     # permissions to the user we created. \
     && chown -R postfix:postfix /etc/postfix/ /var/spool/ /etc/sasldb2 \
     # Copy the start-postfix.sh script. \
-    && cp /scripts/start-postfix.sh /opt/bin/start-postfix.sh \
+    && mkdir -p /opt/postfix/ \
+    && cp /scripts/start-postfix.sh /opt/postfix/ \
+    && ln -sf /opt/postfix/start-postfix.sh /opt/bin/start-postfix \
     # Clean up. \
     && homelab cleanup
 
@@ -63,5 +65,5 @@ ENV PATH="/opt/bin:${PATH}"
 
 USER ${USER_NAME}:${GROUP_NAME}
 WORKDIR /home/${USER_NAME}
-CMD ["start-postfix.sh", "postfix-oneshot"]
+CMD ["start-postfix", "postfix-oneshot"]
 STOPSIGNAL SIGQUIT
