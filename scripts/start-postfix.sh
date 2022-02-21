@@ -20,9 +20,5 @@ start_postfix () {
     exec /usr/sbin/postfix start-fg
 }
 
-if [ "$1" = 'postfix-oneshot' ]; then
-    setup_postfix
-    start_postfix
-else
-    exec "$@"
-fi
+setup_postfix
+start_postfix
