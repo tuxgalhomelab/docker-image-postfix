@@ -6,13 +6,13 @@ FROM ${BASE_IMAGE_NAME}:${BASE_IMAGE_TAG} AS builder
 
 SHELL ["/bin/bash", "-c"]
 
-ARG POSTFIX_VERSION_DEBIAN_PKG
+ARG POSTFIX_VERSION
 
 COPY scripts/start-postfix.sh /scripts/
 COPY patches /patches
 RUN \
     set -e -o pipefail \
-    && homelab build-pkg-from-std-deb-src "postfix=${POSTFIX_VERSION_DEBIAN_PKG:?}"
+    && homelab build-pkg-from-std-deb-src "postfix=${POSTFIX_VERSION:?}"
 
 ARG BASE_IMAGE_NAME
 ARG BASE_IMAGE_TAG
