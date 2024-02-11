@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Usage: prepare-release.sh v0.1.1 3.7.10
+# Usage: prepare-release.sh v0.1.1 3.7.10-0
 
 set -e -o pipefail
 
@@ -59,6 +59,6 @@ update_latest_version BASE_IMAGE
 git add ${ARGS_FILE:?}
 git commit -m "feat: Prepare for ${rel_ver:?} release based off ${pkg:?} ${pkg_ver:?}"
 echo "Creating tag ${rel_ver:?}-${tag_pkg}-${pkg_ver:?}"
-git githubtag -m "${rel_ver:?} release based off ${pkg:?} ${pkg_ver:?}" ${rel_ver:?}-postfix-${pkg_ver:?}
+git githubtag -m "${rel_ver:?} release based off ${pkg:?} ${pkg_ver:?}" ${rel_ver:?}-${tag_pkg:?}-${pkg_ver:?}
 git checkout master
 git branch -D temp-release
