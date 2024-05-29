@@ -32,15 +32,17 @@ set_config_arg() {
 
 pkg="Postfix"
 pkg_install_name="postfix"
-config_key="POSTFIX_VERSION"
+config_ver_key="POSTFIX_VERSION"
 config_image_key_prefix="BASE_IMAGE"
 
-existing_upstream_ver=$(get_config_arg ${config_key:?})
+existing_upstream_ver=$(get_config_arg ${config_ver_key:?})
 latest_upstream_ver=$(get_package_version ${pkg_install_name:?} ${config_image_key_prefix:?})
 
 if [[ "${existing_upstream_ver:?}" == "${latest_upstream_ver:?}" ]]; then
     echo "Existing config is already up to date and pointing to the latest upstream ${pkg:?} version '${latest_upstream_ver:?}'"
 else
-    echo "Updating ${pkg:?} ${config_key:?} '${existing_upstream_ver:?}' -> '${latest_upstream_ver:?}'"
-    set_config_arg "${config_key:?}" "${latest_upstream_ver:?}"
+    echo "Updating ${pkg:?} ${config_ver_key:?} '${existing_upstream_ver:?}' -> '${latest_upstream_ver:?}'"
+    set_config_arg "${config_ver_key:?}" "${latest_upstream_ver:?}"
+    git add ${ARGS_FILE:?}
+    git commit -m "feat: Bump upstream ${pkg:?} version to ${latest_upstream_ver:?}."
 fi
