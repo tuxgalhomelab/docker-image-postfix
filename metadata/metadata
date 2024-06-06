@@ -7,7 +7,7 @@ PACKAGE_NAME="Postfix"
 PACKAGES_FILE_PACKAGE_NAME="postfix"
 RELEASE_PACKAGE_NAME="Postfix"
 RELEASE_TAG_PACKAGE_NAME="postfix"
-UPSTREAM_IMAGE_CONFIG_KEY_PREFIX="BASE_IMAGE"
+BASE_IMAGE_CONFIG_KEY_PREFIX="BASE_IMAGE"
 UPSTREAM_VERSION_CONFIG_KEY="POSTFIX_VERSION"
 TEST_TYPE="background"
 TEST_CONTAINER_TYPE="postfix"
@@ -19,7 +19,7 @@ current_upstream_version() {
 
 latest_upstream_version() {
     docker run --rm \
-        "$(upstream_image_name)" \
+        "$(base_image_name)" \
         sh -c \
         "$(package_version_cmd ${PACKAGES_FILE_PACKAGE_NAME:?})"
 }
