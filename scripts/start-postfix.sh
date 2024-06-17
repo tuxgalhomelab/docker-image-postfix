@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -E -e -o pipefail
 
+set_umask() {
+    # Configure umask to allow write permissions for the group by default
+    # in addition to the owner.
+    umask 0002
+}
+
 setup_postfix() {
     echo "Setting up postfix ..."
 
@@ -20,5 +26,6 @@ start_postfix () {
     exec /usr/sbin/postfix start-fg
 }
 
+set_umask
 setup_postfix
 start_postfix
