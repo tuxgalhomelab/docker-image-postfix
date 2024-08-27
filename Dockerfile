@@ -12,6 +12,7 @@ COPY scripts/start-postfix.sh /scripts/
 COPY patches /patches
 RUN \
     set -E -e -o pipefail \
+    && export HOMELAB_VERBOSE=y \
     && homelab build-pkg-from-std-deb-src "postfix=${POSTFIX_VERSION:?}"
 
 ARG BASE_IMAGE_NAME
@@ -31,6 +32,7 @@ RUN \
     --mount=type=bind,target=/scripts,from=builder,source=/scripts \
     --mount=type=bind,target=/deb-pkgs,from=builder,source=/deb-pkgs \
     set -E -e -o pipefail \
+    && export HOMELAB_VERBOSE=y \
     # Create the user and the group. \
     && homelab add-user \
         ${USER_NAME:?} \
