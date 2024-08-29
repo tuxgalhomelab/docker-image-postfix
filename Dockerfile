@@ -8,6 +8,8 @@ ARG POSTFIX_VERSION
 
 COPY scripts/start-postfix.sh /scripts/
 COPY patches /patches
+
+# hadolint ignore=SC3040
 RUN \
     set -E -e -o pipefail \
     && export HOMELAB_VERBOSE=y \
@@ -24,6 +26,7 @@ ARG GROUP_ID
 ARG PACKAGES_TO_INSTALL
 ARG POSTFIX_VERSION
 
+# hadolint ignore=SC3040
 RUN \
     --mount=type=bind,target=/scripts,from=builder,source=/scripts \
     --mount=type=bind,target=/deb-pkgs,from=builder,source=/deb-pkgs \
