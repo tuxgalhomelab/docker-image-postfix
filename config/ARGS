@@ -1,5 +1,5 @@
 BASE_IMAGE_NAME=tuxgal/homelab-base
-BASE_IMAGE_TAG=master
+BASE_IMAGE_TAG=0.3.8-bookworm-20251208-slim
 USER_NAME=postfix
 GROUP_NAME=postfix
 USER_ID=16003
