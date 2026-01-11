@@ -69,5 +69,5 @@ test_image_after_container_startup() {
         "$(container_ip "${container_name}")" \
         25 \
         5 \
-        '^220 .+ ESMTP Postfix \(Debian\/GNU\)'
+        '^220 localhost\..+ ESMTP Postfix \(Debian\)'
 }
