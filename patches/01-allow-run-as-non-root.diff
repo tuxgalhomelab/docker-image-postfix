@@ -81,6 +81,20 @@ diff -u -r -N a/postfix-3.10.5/conf/postfix-script b/postfix-3.10.5/conf/postfix
  
  		find $dir -type f -print | while read path
  		do
+diff -u -r -N a/postfix-3.10.5/conf/post-install b/postfix-3.10.5/conf/post-install
+--- a/postfix-3.10.5/conf/post-install	2026-01-11 00:54:40.000000000 -0800
++++ b/postfix-3.10.5/conf/post-install	2026-01-11 01:52:49.993184969 -0800
+@@ -571,8 +571,8 @@
+ 		set_permission=1
+ 	    fi
+ 	    test -n "$set_permission" && {
+-		chown $recursive $owner $path || exit 1
+-		test -z "$group" || chgrp $recursive $group $path || exit 1
++		# chown $recursive $owner $path || exit 1
++		# test -z "$group" || chgrp $recursive $group $path || exit 1
+ 		# Don't "chmod -R"; queue file status is encoded in mode bits.
+ 		if [ "$type" = "d" -a -n "$recursive" ]
+ 		then
 diff -u -r -N a/postfix-3.10.5/src/global/dynamicmaps.c b/postfix-3.10.5/src/global/dynamicmaps.c
 --- a/postfix-3.10.5/src/global/dynamicmaps.c	2022-05-04 07:48:12.000000000 -0700
 +++ b/postfix-3.10.5/src/global/dynamicmaps.c	2026-01-11 01:09:38.909551746 -0800
