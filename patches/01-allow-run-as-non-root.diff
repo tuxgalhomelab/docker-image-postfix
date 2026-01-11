@@ -1,6 +1,6 @@
-diff -u -r a/postfix-3.7.11/conf/postfix-script b/postfix-3.7.11/conf/postfix-script
---- a/postfix-3.7.11/conf/postfix-script	2022-07-10 18:44:14.417026857 -0700
-+++ b/postfix-3.7.11/conf/postfix-script	2022-07-10 18:44:21.401191574 -0700
+diff -u -r a/postfix-3.10.5/conf/postfix-script b/postfix-3.10.5/conf/postfix-script
+--- a/postfix-3.10.5/conf/postfix-script	2022-07-10 18:44:14.417026857 -0700
++++ b/postfix-3.10.5/conf/postfix-script	2022-07-10 18:44:21.401191574 -0700
 @@ -320,9 +320,9 @@
  
  	# Check Postfix root-owned directory owner/permissions.
@@ -95,9 +95,9 @@ diff -u -r a/postfix-3.7.11/conf/postfix-script b/postfix-3.7.11/conf/postfix-sc
  
  		find $dir -type f -print | while read path
  		do
-diff -u -r a/postfix-3.7.11/src/global/dynamicmaps.c b/postfix-3.7.11/src/global/dynamicmaps.c
---- a/postfix-3.7.11/src/global/dynamicmaps.c	2022-07-10 18:44:14.469028084 -0700
-+++ b/postfix-3.7.11/src/global/dynamicmaps.c	2022-07-10 18:44:21.457192894 -0700
+diff -u -r a/postfix-3.10.5/src/global/dynamicmaps.c b/postfix-3.10.5/src/global/dynamicmaps.c
+--- a/postfix-3.10.5/src/global/dynamicmaps.c	2022-07-10 18:44:14.469028084 -0700
++++ b/postfix-3.10.5/src/global/dynamicmaps.c	2022-07-10 18:44:21.457192894 -0700
 @@ -136,12 +136,16 @@
  		 dict_type, dp->soname);
  	return (0);
@@ -157,9 +157,9 @@ diff -u -r a/postfix-3.7.11/src/global/dynamicmaps.c b/postfix-3.7.11/src/global
  	vstream_fclose(fp);
      } else if (errno != ENOENT) {
  	msg_fatal("%s: file open failed: %m", path);
-diff -u -r a/postfix-3.7.11/src/global/mail_params.c b/postfix-3.7.11/src/global/mail_params.c
---- a/postfix-3.7.11/src/global/mail_params.c	2022-07-10 18:44:14.465027989 -0700
-+++ b/postfix-3.7.11/src/global/mail_params.c	2022-07-10 18:44:21.457192894 -0700
+diff -u -r a/postfix-3.10.5/src/global/mail_params.c b/postfix-3.10.5/src/global/mail_params.c
+--- a/postfix-3.10.5/src/global/mail_params.c	2022-07-10 18:44:14.465027989 -0700
++++ b/postfix-3.10.5/src/global/mail_params.c	2022-07-10 18:44:21.457192894 -0700
 @@ -939,7 +939,11 @@
      check_default_privs();
      check_mail_owner();
@@ -172,9 +172,9 @@ diff -u -r a/postfix-3.7.11/src/global/mail_params.c b/postfix-3.7.11/src/global
      dict_db_cache_size = var_db_read_buf;
      dict_lmdb_map_size = var_lmdb_map_size;
      inet_windowsize = var_inet_windowsize;
-diff -u -r a/postfix-3.7.11/src/master/master.c b/postfix-3.7.11/src/master/master.c
---- a/postfix-3.7.11/src/master/master.c	2022-07-10 18:44:14.473028180 -0700
-+++ b/postfix-3.7.11/src/master/master.c	2022-07-10 18:44:21.457192894 -0700
+diff -u -r a/postfix-3.10.5/src/master/master.c b/postfix-3.10.5/src/master/master.c
+--- a/postfix-3.10.5/src/master/master.c	2022-07-10 18:44:14.473028180 -0700
++++ b/postfix-3.10.5/src/master/master.c	2022-07-10 18:44:21.457192894 -0700
 @@ -342,10 +342,13 @@
       * privileges for selected operations. That's right - it takes privileges
       * to toss privileges.
@@ -189,9 +189,9 @@ diff -u -r a/postfix-3.7.11/src/master/master.c b/postfix-3.7.11/src/master/mast
  
      /*
       * Process JCL.
-diff -u -r a/postfix-3.7.11/src/postfix/postfix.c b/postfix-3.7.11/src/postfix/postfix.c
---- a/postfix-3.7.11/src/postfix/postfix.c	2022-07-10 18:44:14.473028180 -0700
-+++ b/postfix-3.7.11/src/postfix/postfix.c	2022-07-10 18:44:21.457192894 -0700
+diff -u -r a/postfix-3.10.5/src/postfix/postfix.c b/postfix-3.10.5/src/postfix/postfix.c
+--- a/postfix-3.10.5/src/postfix/postfix.c	2022-07-10 18:44:14.473028180 -0700
++++ b/postfix-3.10.5/src/postfix/postfix.c	2022-07-10 18:44:21.457192894 -0700
 @@ -520,12 +520,15 @@
       * privileges for selected operations. That's right - it takes privileges
       * to toss privileges.
@@ -208,9 +208,9 @@ diff -u -r a/postfix-3.7.11/src/postfix/postfix.c b/postfix-3.7.11/src/postfix/p
  
      /*
       * Parse switches.
-diff -u -r a/postfix-3.7.11/src/postsuper/postsuper.c b/postfix-3.7.11/src/postsuper/postsuper.c
---- a/postfix-3.7.11/src/postsuper/postsuper.c	2022-07-10 18:44:14.453027708 -0700
-+++ b/postfix-3.7.11/src/postsuper/postsuper.c	2022-07-10 18:44:21.433192329 -0700
+diff -u -r a/postfix-3.10.5/src/postsuper/postsuper.c b/postfix-3.10.5/src/postsuper/postsuper.c
+--- a/postfix-3.10.5/src/postsuper/postsuper.c	2022-07-10 18:44:14.453027708 -0700
++++ b/postfix-3.10.5/src/postsuper/postsuper.c	2022-07-10 18:44:21.433192329 -0700
 @@ -1328,10 +1328,13 @@
       * the secondary groups, the process environment, and so on. Otherwise,
       * accidents can happen. If not with Postfix, then with other software.
@@ -225,9 +225,9 @@ diff -u -r a/postfix-3.7.11/src/postsuper/postsuper.c b/postfix-3.7.11/src/posts
  
      /*
       * Parse JCL.
-diff -u -r a/postfix-3.7.11/src/util/chroot_uid.c b/postfix-3.7.11/src/util/chroot_uid.c
---- a/postfix-3.7.11/src/util/chroot_uid.c	2022-07-10 18:44:14.505028933 -0700
-+++ b/postfix-3.7.11/src/util/chroot_uid.c	2022-07-10 18:44:21.493193745 -0700
+diff -u -r a/postfix-3.10.5/src/util/chroot_uid.c b/postfix-3.10.5/src/util/chroot_uid.c
+--- a/postfix-3.10.5/src/util/chroot_uid.c	2022-07-10 18:44:14.505028933 -0700
++++ b/postfix-3.10.5/src/util/chroot_uid.c	2022-07-10 18:44:21.493193745 -0700
 @@ -42,6 +42,8 @@
  
  void    chroot_uid(const char *root_dir, const char *user_name)
@@ -244,9 +244,9 @@ diff -u -r a/postfix-3.7.11/src/util/chroot_uid.c b/postfix-3.7.11/src/util/chro
 +#endif
 +
  }
-diff -u -r a/postfix-3.7.11/src/util/set_eugid.c b/postfix-3.7.11/src/util/set_eugid.c
---- a/postfix-3.7.11/src/util/set_eugid.c	2022-07-10 18:44:14.505028933 -0700
-+++ b/postfix-3.7.11/src/util/set_eugid.c	2022-07-10 18:44:21.493193745 -0700
+diff -u -r a/postfix-3.10.5/src/util/set_eugid.c b/postfix-3.10.5/src/util/set_eugid.c
+--- a/postfix-3.10.5/src/util/set_eugid.c	2022-07-10 18:44:14.505028933 -0700
++++ b/postfix-3.10.5/src/util/set_eugid.c	2022-07-10 18:44:21.493193745 -0700
 @@ -53,6 +53,8 @@
  
  void    set_eugid(uid_t euid, gid_t egid)
@@ -263,9 +263,9 @@ diff -u -r a/postfix-3.7.11/src/util/set_eugid.c b/postfix-3.7.11/src/util/set_e
 +#endif
 +
  }
-diff -u -r a/postfix-3.7.11/src/util/set_ugid.c b/postfix-3.7.11/src/util/set_ugid.c
---- a/postfix-3.7.11/src/util/set_ugid.c	2022-07-10 18:44:14.505028933 -0700
-+++ b/postfix-3.7.11/src/util/set_ugid.c	2022-07-10 18:44:21.493193745 -0700
+diff -u -r a/postfix-3.10.5/src/util/set_ugid.c b/postfix-3.10.5/src/util/set_ugid.c
+--- a/postfix-3.10.5/src/util/set_ugid.c	2022-07-10 18:44:14.505028933 -0700
++++ b/postfix-3.10.5/src/util/set_ugid.c	2022-07-10 18:44:21.493193745 -0700
 @@ -44,6 +44,8 @@
  
  void    set_ugid(uid_t uid, gid_t gid)
