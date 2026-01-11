@@ -1,7 +1,7 @@
-diff -u -r a/postfix-3.7.11/conf/postfix-script b/postfix-3.7.11/conf/postfix-script
---- a/postfix-3.7.11/conf/postfix-script	2022-07-10 18:44:14.417026857 -0700
-+++ b/postfix-3.7.11/conf/postfix-script	2022-07-10 18:44:21.401191574 -0700
-@@ -320,9 +320,9 @@
+diff -u -r -N a/postfix-3.10.5/conf/postfix-script b/postfix-3.10.5/conf/postfix-script
+--- a/postfix-3.10.5/conf/postfix-script	2026-01-11 00:54:40.000000000 -0800
++++ b/postfix-3.10.5/conf/postfix-script	2026-01-11 01:14:19.780515375 -0800
+@@ -351,9 +351,9 @@
  
  	# Check Postfix root-owned directory owner/permissions.
  
@@ -14,7 +14,7 @@ diff -u -r a/postfix-3.7.11/conf/postfix-script b/postfix-3.7.11/conf/postfix-sc
  
  	find $queue_directory/. $queue_directory/pid \
  	    -prune \( -perm -020 -o -perm -002 \) \
-@@ -338,40 +338,40 @@
+@@ -369,32 +369,32 @@
  	}
  	todo=`echo "$todo" | tr ' ' '\12' | sort -u`
  
@@ -23,22 +23,8 @@ diff -u -r a/postfix-3.7.11/conf/postfix-script b/postfix-3.7.11/conf/postfix-sc
 +	# find $todo ! -user root \
 +	#     -exec $WARN not owned by root: {} \;
  
- 	# Handle symlinks separately
- 	find -L $todo \( -perm -020 -o -perm -002 \) \
+ 	find $todo \( -perm -020 -o -perm -002 \) \
  	    -exec $WARN group or other writable: {} \;
- 
--	find $todo -type l | while read f; do \
--	    # makedefs out known to be a symlink and OK
--	    if [ "$f" != "/etc/postfix/./makedefs.out" ]; then \
--	      readlink "$f" | grep -q / && $WARN symlink leaves directory: "$f"; \
--	    fi \
--	done; \
-+	# find $todo -type l | while read f; do \
-+	#     # makedefs out known to be a symlink and OK
-+	#     if [ "$f" != "/etc/postfix/./makedefs.out" ]; then \
-+	#       readlink "$f" | grep -q / && $WARN symlink leaves directory: "$f"; \
-+	#     fi \
-+	# done; \
  
  	# Check Postfix mail_owner-owned directory tree owner/permissions.
  
@@ -53,13 +39,13 @@ diff -u -r a/postfix-3.7.11/conf/postfix-script b/postfix-3.7.11/conf/postfix-sc
  	# Check Postfix mail_owner-owned directory tree owner.
  
 -	find `ls -d $queue_directory/* | \
--	    egrep '/(saved|incoming|active|defer|deferred|bounce|hold|trace|corrupt|public|private|flush)$'` \
+-	    grep -E '/(saved|incoming|active|defer|deferred|bounce|hold|trace|corrupt|public|private|flush)$'` \
 -	    ! \( -type p -o -type s \) ! -user $mail_owner \
 -		-exec $WARN not owned by $mail_owner: {} \;
 +	# find `ls -d $queue_directory/* | \
-+	#    egrep '/(saved|incoming|active|defer|deferred|bounce|hold|trace|corrupt|public|private|flush)$'` \
-+	#    ! \( -type p -o -type s \) ! -user $mail_owner \
-+	# -exec $WARN not owned by $mail_owner: {} \;
++	#     grep -E '/(saved|incoming|active|defer|deferred|bounce|hold|trace|corrupt|public|private|flush)$'` \
++	#     ! \( -type p -o -type s \) ! -user $mail_owner \
++	# 	-exec $WARN not owned by $mail_owner: {} \;
  
  	# WARNING: this should not descend into the maildrop directory.
  	# maildrop is the least trusted Postfix directory.
@@ -71,7 +57,7 @@ diff -u -r a/postfix-3.7.11/conf/postfix-script b/postfix-3.7.11/conf/postfix-sc
  
  	# Check Postfix setgid_group-owned directory and file group/permissions.
  
-@@ -379,9 +379,9 @@
+@@ -402,9 +402,9 @@
  	test -n "$check_shared_files" && 
  	   todo="$command_directory/postqueue $command_directory/postdrop $todo"
  
@@ -84,7 +70,7 @@ diff -u -r a/postfix-3.7.11/conf/postfix-script b/postfix-3.7.11/conf/postfix-sc
  
  	test -n "$check_shared_files" &&
  	find $command_directory/postqueue $command_directory/postdrop \
-@@ -393,8 +393,8 @@
+@@ -416,8 +416,8 @@
  	for dir in bin etc lib sbin usr
  	do
  	    test -d $dir && {
@@ -95,10 +81,10 @@ diff -u -r a/postfix-3.7.11/conf/postfix-script b/postfix-3.7.11/conf/postfix-sc
  
  		find $dir -type f -print | while read path
  		do
-diff -u -r a/postfix-3.7.11/src/global/dynamicmaps.c b/postfix-3.7.11/src/global/dynamicmaps.c
---- a/postfix-3.7.11/src/global/dynamicmaps.c	2022-07-10 18:44:14.469028084 -0700
-+++ b/postfix-3.7.11/src/global/dynamicmaps.c	2022-07-10 18:44:21.457192894 -0700
-@@ -136,12 +136,16 @@
+diff -u -r -N a/postfix-3.10.5/src/global/dynamicmaps.c b/postfix-3.10.5/src/global/dynamicmaps.c
+--- a/postfix-3.10.5/src/global/dynamicmaps.c	2022-05-04 07:48:12.000000000 -0700
++++ b/postfix-3.10.5/src/global/dynamicmaps.c	2026-01-11 01:09:38.909551746 -0800
+@@ -158,12 +158,16 @@
  		 dict_type, dp->soname);
  	return (0);
      }
@@ -112,25 +98,10 @@ diff -u -r a/postfix-3.7.11/src/global/dynamicmaps.c b/postfix-3.7.11/src/global
      }
 +#endif
 +
-     fn[0].name = dp->dict_name;
-     fn[1].name = 0;
-     load_library_symbols(dp->soname, fn, (LIB_DP *) 0);
-@@ -180,10 +184,14 @@
- 	msg_fatal("unsupported dictionary type: %s (%s: %m). "
- 		  "Is the postfix-%s package installed?",
- 		  dict_type, dp->soname, dict_type);
-+
-+#if 0
-     if (st.st_uid != 0 || (st.st_mode & (S_IWGRP | S_IWOTH)) != 0)
- 	msg_fatal("unsupported dictionary type: %s "
- 		  "(%s: file is owned or writable by non-root users)",
- 		  dict_type, dp->soname);
-+#endif
-+
-     fn[0].name = dp->mkmap_name;
-     fn[1].name = 0;
-     load_library_symbols(dp->soname, fn, (LIB_DP *) 0);
-@@ -251,10 +259,14 @@
+     fn[0].name = dp->dict_name;			/* not null */
+     fn[1].name = dp->mkmap_name;		/* may be null */
+     fn[2].name = 0;
+@@ -239,10 +243,14 @@
      if ((fp = vstream_fopen(path, O_RDONLY, 0)) != 0) {
  	if (fstat(vstream_fileno(fp), &st) < 0)
  	    msg_fatal("%s: fstat failed; %m", path);
@@ -145,8 +116,8 @@ diff -u -r a/postfix-3.7.11/src/global/dynamicmaps.c b/postfix-3.7.11/src/global
  	    buf = vstring_alloc(100);
  	    while (vstring_get_nonl(buf, fp) != VSTREAM_EOF) {
  		cp = vstring_str(buf);
-@@ -293,7 +305,11 @@
- 		saved_mkmap_open_hook = mkmap_open_extend(dymap_mkmap_lookup);
+@@ -281,7 +289,11 @@
+ 		saved_dict_open_hook = dict_open_extend(dymap_dict_lookup);
  		saved_dict_mapnames_hook = dict_mapnames_extend(dymap_list);
  	    }
 +
@@ -157,10 +128,10 @@ diff -u -r a/postfix-3.7.11/src/global/dynamicmaps.c b/postfix-3.7.11/src/global
  	vstream_fclose(fp);
      } else if (errno != ENOENT) {
  	msg_fatal("%s: file open failed: %m", path);
-diff -u -r a/postfix-3.7.11/src/global/mail_params.c b/postfix-3.7.11/src/global/mail_params.c
---- a/postfix-3.7.11/src/global/mail_params.c	2022-07-10 18:44:14.465027989 -0700
-+++ b/postfix-3.7.11/src/global/mail_params.c	2022-07-10 18:44:21.457192894 -0700
-@@ -939,7 +939,11 @@
+diff -u -r -N a/postfix-3.10.5/src/global/mail_params.c b/postfix-3.10.5/src/global/mail_params.c
+--- a/postfix-3.10.5/src/global/mail_params.c	2025-02-01 13:43:40.000000000 -0800
++++ b/postfix-3.10.5/src/global/mail_params.c	2026-01-11 01:02:31.830923801 -0800
+@@ -989,7 +989,11 @@
      check_default_privs();
      check_mail_owner();
      check_sgid_group();
@@ -171,11 +142,11 @@ diff -u -r a/postfix-3.7.11/src/global/mail_params.c b/postfix-3.7.11/src/global
 +
      dict_db_cache_size = var_db_read_buf;
      dict_lmdb_map_size = var_lmdb_map_size;
-     inet_windowsize = var_inet_windowsize;
-diff -u -r a/postfix-3.7.11/src/master/master.c b/postfix-3.7.11/src/master/master.c
---- a/postfix-3.7.11/src/master/master.c	2022-07-10 18:44:14.473028180 -0700
-+++ b/postfix-3.7.11/src/master/master.c	2022-07-10 18:44:21.457192894 -0700
-@@ -342,10 +342,13 @@
+     dict_sockmap_max_reply = var_sockmap_max_reply;
+diff -u -r -N a/postfix-3.10.5/src/master/master.c b/postfix-3.10.5/src/master/master.c
+--- a/postfix-3.10.5/src/master/master.c	2024-10-10 15:15:22.000000000 -0700
++++ b/postfix-3.10.5/src/master/master.c	2026-01-11 01:02:31.834923902 -0800
+@@ -346,10 +346,13 @@
       * privileges for selected operations. That's right - it takes privileges
       * to toss privileges.
       */
@@ -189,10 +160,10 @@ diff -u -r a/postfix-3.7.11/src/master/master.c b/postfix-3.7.11/src/master/mast
  
      /*
       * Process JCL.
-diff -u -r a/postfix-3.7.11/src/postfix/postfix.c b/postfix-3.7.11/src/postfix/postfix.c
---- a/postfix-3.7.11/src/postfix/postfix.c	2022-07-10 18:44:14.473028180 -0700
-+++ b/postfix-3.7.11/src/postfix/postfix.c	2022-07-10 18:44:21.457192894 -0700
-@@ -520,12 +520,15 @@
+diff -u -r -N a/postfix-3.10.5/src/postfix/postfix.c b/postfix-3.10.5/src/postfix/postfix.c
+--- a/postfix-3.10.5/src/postfix/postfix.c	2026-01-11 00:54:40.000000000 -0800
++++ b/postfix-3.10.5/src/postfix/postfix.c	2026-01-11 01:02:31.834923902 -0800
+@@ -556,12 +556,15 @@
       * privileges for selected operations. That's right - it takes privileges
       * to toss privileges.
       */
@@ -208,10 +179,10 @@ diff -u -r a/postfix-3.7.11/src/postfix/postfix.c b/postfix-3.7.11/src/postfix/p
  
      /*
       * Parse switches.
-diff -u -r a/postfix-3.7.11/src/postsuper/postsuper.c b/postfix-3.7.11/src/postsuper/postsuper.c
---- a/postfix-3.7.11/src/postsuper/postsuper.c	2022-07-10 18:44:14.453027708 -0700
-+++ b/postfix-3.7.11/src/postsuper/postsuper.c	2022-07-10 18:44:21.433192329 -0700
-@@ -1328,10 +1328,13 @@
+diff -u -r -N a/postfix-3.10.5/src/postsuper/postsuper.c b/postfix-3.10.5/src/postsuper/postsuper.c
+--- a/postfix-3.10.5/src/postsuper/postsuper.c	2024-01-25 09:24:32.000000000 -0800
++++ b/postfix-3.10.5/src/postsuper/postsuper.c	2026-01-11 01:02:31.834923902 -0800
+@@ -1339,10 +1339,13 @@
       * the secondary groups, the process environment, and so on. Otherwise,
       * accidents can happen. If not with Postfix, then with other software.
       */
@@ -225,9 +196,9 @@ diff -u -r a/postfix-3.7.11/src/postsuper/postsuper.c b/postfix-3.7.11/src/posts
  
      /*
       * Parse JCL.
-diff -u -r a/postfix-3.7.11/src/util/chroot_uid.c b/postfix-3.7.11/src/util/chroot_uid.c
---- a/postfix-3.7.11/src/util/chroot_uid.c	2022-07-10 18:44:14.505028933 -0700
-+++ b/postfix-3.7.11/src/util/chroot_uid.c	2022-07-10 18:44:21.493193745 -0700
+diff -u -r -N a/postfix-3.10.5/src/util/chroot_uid.c b/postfix-3.10.5/src/util/chroot_uid.c
+--- a/postfix-3.10.5/src/util/chroot_uid.c	2000-09-20 17:34:13.000000000 -0700
++++ b/postfix-3.10.5/src/util/chroot_uid.c	2026-01-11 01:02:31.834923902 -0800
 @@ -42,6 +42,8 @@
  
  void    chroot_uid(const char *root_dir, const char *user_name)
@@ -244,9 +215,9 @@ diff -u -r a/postfix-3.7.11/src/util/chroot_uid.c b/postfix-3.7.11/src/util/chro
 +#endif
 +
  }
-diff -u -r a/postfix-3.7.11/src/util/set_eugid.c b/postfix-3.7.11/src/util/set_eugid.c
---- a/postfix-3.7.11/src/util/set_eugid.c	2022-07-10 18:44:14.505028933 -0700
-+++ b/postfix-3.7.11/src/util/set_eugid.c	2022-07-10 18:44:21.493193745 -0700
+diff -u -r -N a/postfix-3.10.5/src/util/set_eugid.c b/postfix-3.10.5/src/util/set_eugid.c
+--- a/postfix-3.10.5/src/util/set_eugid.c	2024-10-10 15:15:28.000000000 -0700
++++ b/postfix-3.10.5/src/util/set_eugid.c	2026-01-11 01:02:31.834923902 -0800
 @@ -53,6 +53,8 @@
  
  void    set_eugid(uid_t euid, gid_t egid)
@@ -263,9 +234,9 @@ diff -u -r a/postfix-3.7.11/src/util/set_eugid.c b/postfix-3.7.11/src/util/set_e
 +#endif
 +
  }
-diff -u -r a/postfix-3.7.11/src/util/set_ugid.c b/postfix-3.7.11/src/util/set_ugid.c
---- a/postfix-3.7.11/src/util/set_ugid.c	2022-07-10 18:44:14.505028933 -0700
-+++ b/postfix-3.7.11/src/util/set_ugid.c	2022-07-10 18:44:21.493193745 -0700
+diff -u -r -N a/postfix-3.10.5/src/util/set_ugid.c b/postfix-3.10.5/src/util/set_ugid.c
+--- a/postfix-3.10.5/src/util/set_ugid.c	2000-11-26 11:09:08.000000000 -0800
++++ b/postfix-3.10.5/src/util/set_ugid.c	2026-01-11 01:02:31.834923902 -0800
 @@ -44,6 +44,8 @@
  
  void    set_ugid(uid_t uid, gid_t gid)
