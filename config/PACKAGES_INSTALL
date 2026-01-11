@@ -1,7 +1,9 @@
 cpio=2.15+dfsg-2
 e2fsprogs=1.47.2-3+b7
+libicu76=76.1-4
 libnsl2=1.3.0-3+b3
 libsasl2-modules=2.1.28+dfsg1-9
+libtlsrpt0=0.5.0rc1-2
 mailutils=1:3.19-1
 netbase=6.5
 s-nail=14.9.25-1
